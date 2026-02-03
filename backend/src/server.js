@@ -29,6 +29,8 @@ app.get("/api/todos", async (req, res) => {
   }
 });
 
+//POST
+
 app.post("/api/todos", async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -56,6 +58,7 @@ app.post("/api/todos", async (req, res) => {
   }
 });
 
+//PATCH
 app.patch("/api/todos/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
@@ -82,6 +85,27 @@ app.patch("/api/todos/:id/status", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to update status" });
+  }
+});
+
+//DELETE
+app.delete("/api/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      "DELETE FROM todos WHERE id = $1 RETURNING id",
+      [id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    console.error("DELETE /api/todos/:id failed:", err);
+    res.status(500).json({ error: "Failed to delete todo" });
   }
 });
 
