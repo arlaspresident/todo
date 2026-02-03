@@ -56,6 +56,35 @@ app.post("/api/todos", async (req, res) => {
   }
 });
 
+app.patch("/api/todos/:id/status", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const allowed = ["not_started", "in_progress", "done"];
+    if (!allowed.includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    const result = await pool.query(
+      `UPDATE todos
+       SET status = $1
+       WHERE id = $2
+       RETURNING id, title, description, status, created_at`,
+      [status, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update status" });
+  }
+});
+
 
 const PORT = process.env.PORT || 5000;
 
