@@ -1,0 +1,62 @@
+.todo-item {
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.todo-item .title {
+  font-size: 18px;
+}
+
+.todo-item .desc {
+  margin: 6px 0 0;
+  opacity: 0.9;
+}
+
+.todo-item .actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.todo-item .status {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.todo-item select {
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: transparent;
+}
+
+.todo-item button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: transparent;
+  cursor: pointer;
+}
+
+.todo-item button:hover {
+  border-color: #555;
+}
+
+.todo-item .content {
+  display: grid;
+  gap: 6px;
+}
+
+.todo-item .danger {
+  border-color: #6b2b2b;
+}
+
+.todo-item .danger:hover {
+  border-color: #a33b3b;
+}
+
