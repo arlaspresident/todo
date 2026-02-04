@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# Todo App - React + TypeScript + Backend API
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+En fullstack to do app byggd med **react och typescript** i frontend samt ett **eget backend API** med CRUD.  
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Funktionalitet
+- Visa alla todos
+- Skapa ny todo med validering
+- Uppdatera status (ej påbörjad, pågående, avklarad)
+- Ta bort todo
+- Laddnings- och felhantering vid API anrop
+- Responsiv design (desktop & mobil)
 
-## React Compiler
+## Tekniker
+**Frontend**
+- React
+- TypeScript
+- Vite
+- CSS 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Backend**
+- Node.js
+- Express
+- PostgreSQL
+- REST API (CRUD)
 
-## Expanding the ESLint configuration
+## Live demo
+Frontend:  
+https://todooooooooooooooo.netlify.app
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Backend är publicerad separat och används av frontend via API.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Starta projektet lokalt
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Frontend kräver en enviroment variable:
+VITE_API_BASE_URL=http://localhost:5000
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## API endpoints
+- GET /api/todos
+- POST /api/todos
+- PATCH /api/todos/:id/status
+- DELETE /api/todos/:id
