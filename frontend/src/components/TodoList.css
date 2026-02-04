@@ -1,0 +1,18 @@
+.todo-list {
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.todo-list h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+
+.todo-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}

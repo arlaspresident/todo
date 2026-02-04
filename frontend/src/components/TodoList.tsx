@@ -1,5 +1,6 @@
 import type { Todo, TodoStatus } from "../types/todo";
 import TodoItem from "./TodoItem";
+import "./TodoList.css";
 
 type Props = {
     todos: Todo[];
@@ -11,11 +12,16 @@ export default function TodoList({ todos, onStatusChange, onDelete }: Props) {
     if (todos.length === 0) return <p>Inga todos än.</p>;
 
     return (
-        <div>
+        <div className="todo-list">
             <h2>Lista</h2>
-            <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: 10 }}>
+            <ul>
                 {todos.map((t) => (
-                    <TodoItem key={t.id} todo={t} onStatusChange={onStatusChange} onDelete={onDelete} />
+                    <TodoItem
+                        key={t.id}
+                        todo={t}
+                        onStatusChange={onStatusChange}
+                        onDelete={onDelete}
+                    />
                 ))}
             </ul>
         </div>
