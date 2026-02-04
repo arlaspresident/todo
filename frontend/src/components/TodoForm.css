@@ -1,0 +1,50 @@
+.todo-form {
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.todo-form h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+
+.todo-form form {
+  display: grid;
+  gap: 10px;
+}
+
+.todo-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.todo-form input,
+.todo-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.todo-form button {
+  padding: 10px 12px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: transparent;
+  cursor: pointer;
+}
+
+.todo-form button:hover {
+  border-color: #555;
+}
+
+.todo-form .error {
+  color: crimson;
+  margin: 0;
+}

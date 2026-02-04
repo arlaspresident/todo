@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./TodoForm.css";
 
 type Props = {
     onAdd: (title: string, description: string) => Promise<void> | void;
@@ -16,7 +17,7 @@ export default function TodoForm({ onAdd }: Props) {
         return null;
     }
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSubmit(e: React.SyntheticEvent) {
         e.preventDefault();
 
         const msg = validate();
@@ -39,10 +40,10 @@ export default function TodoForm({ onAdd }: Props) {
     }
 
     return (
-        <form onSubmit={handleSubmit} style={{ marginBottom: 16 }}>
+        <div className="todo-form">
             <h2>Lägg till todo</h2>
 
-            <div style={{ display: "grid", gap: 8 }}>
+            <form onSubmit={handleSubmit}>
                 <label>
                     Titel *
                     <input
@@ -50,7 +51,6 @@ export default function TodoForm({ onAdd }: Props) {
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Minst 3 tecken"
                         disabled={submitting}
-                        style={{ display: "block", width: "100%", padding: 8 }}
                     />
                 </label>
 
@@ -62,16 +62,15 @@ export default function TodoForm({ onAdd }: Props) {
                         placeholder="Max 200 tecken"
                         disabled={submitting}
                         rows={3}
-                        style={{ display: "block", width: "100%", padding: 8 }}
                     />
                 </label>
 
-                {error && <p style={{ color: "crimson", margin: 0 }}>{error}</p>}
+                {error && <p className="error">{error}</p>}
 
-                <button type="submit" disabled={submitting} style={{ padding: 10 }}>
+                <button type="submit" disabled={submitting}>
                     {submitting ? "Skickar..." : "Lägg till"}
                 </button>
-            </div>
-        </form>
+            </form>
+        </div>
     );
 }
