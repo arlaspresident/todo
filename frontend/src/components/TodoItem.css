@@ -79,6 +79,7 @@
   border-left: 2px solid var(--border);
 }
 
+.todo-notes-btn,
 .todo-delete {
   flex-shrink: 0;
   display: flex;
@@ -91,9 +92,13 @@
   margin-top: 1px;
 }
 
-.todo-delete:hover {
-  color: var(--red);
+.todo-item:hover .todo-notes-btn,
+.todo-item:hover .todo-delete {
+  opacity: 1;
 }
+
+.todo-notes-btn:hover { color: var(--text-2); }
+.todo-delete:hover { color: var(--red); }
 
 .todo-title-input {
   flex: 1;

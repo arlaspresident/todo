@@ -1,4 +1,4 @@
-import type { Todo, TodoStatus, CreateTodoPayload } from "../types/todo";
+import type { Todo, TodoStatus, CreateTodoPayload, Note } from "../types/todo";
 
 const BASE = import.meta.env.VITE_API_BASE_URL as string;
 
@@ -52,6 +52,22 @@ export async function updateTodoStatus(id: number, status: TodoStatus): Promise<
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
+    })
+  );
+  return res.json();
+}
+
+export async function fetchNotes(todoId: number): Promise<Note[]> {
+  const res = await handle(fetch(`${BASE}/api/todos/${todoId}/notes`));
+  return res.json();
+}
+
+export async function addNote(todoId: number, author_emoji: string, content: string): Promise<Note> {
+  const res = await handle(
+    fetch(`${BASE}/api/todos/${todoId}/notes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ author_emoji, content }),
     })
   );
   return res.json();

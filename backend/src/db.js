@@ -7,6 +7,15 @@ const pool = new Pool({
 
 async function initDb() {
   await pool.query(`
+    CREATE TABLE IF NOT EXISTS notes (
+      id SERIAL PRIMARY KEY,
+      todo_id INTEGER REFERENCES todos(id) ON DELETE CASCADE,
+      author_emoji VARCHAR(10) NOT NULL,
+      content TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+  `);
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS todos (
       id SERIAL PRIMARY KEY,
       title VARCHAR(255) NOT NULL,

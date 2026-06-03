@@ -9,6 +9,14 @@ export interface Todo {
   created_at: string;
 }
 
+export interface Note {
+  id: number;
+  todo_id: number;
+  author_emoji: string;
+  content: string;
+  created_at: string;
+}
+
 export interface CreateTodoPayload {
   title: string;
   description?: string;

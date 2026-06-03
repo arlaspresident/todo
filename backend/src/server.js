@@ -128,6 +128,35 @@ app.delete("/api/todos/:id", async (req, res) => {
   }
 });
 
+app.get("/api/todos/:id/notes", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT id, todo_id, author_emoji, content, created_at FROM notes WHERE todo_id = $1 ORDER BY created_at ASC",
+      [req.params.id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch notes" });
+  }
+});
+
+app.post("/api/todos/:id/notes", async (req, res) => {
+  try {
+    const { author_emoji, content } = req.body;
+    if (!content || !content.trim()) return res.status(400).json({ error: "Content required" });
+    if (!author_emoji) return res.status(400).json({ error: "Author required" });
+    const result = await pool.query(
+      "INSERT INTO notes (todo_id, author_emoji, content) VALUES ($1, $2, $3) RETURNING id, todo_id, author_emoji, content, created_at",
+      [req.params.id, author_emoji, content.trim()]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add note" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 (async () => {
