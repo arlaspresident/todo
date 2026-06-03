@@ -55,6 +55,32 @@ app.post("/api/todos", async (req, res) => {
   }
 });
 
+app.patch("/api/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description } = req.body;
+
+    if (title !== undefined && title.trim().length < 2) {
+      return res.status(400).json({ error: "Title must be at least 2 characters" });
+    }
+
+    const result = await pool.query(
+      `UPDATE todos
+       SET title = COALESCE($1, title),
+           description = CASE WHEN $2::text IS NOT NULL THEN $2 ELSE description END
+       WHERE id = $3
+       RETURNING id, title, description, status, category, created_at`,
+      [title ? title.trim() : null, description !== undefined ? (description || null) : null, id]
+    );
+
+    if (result.rowCount === 0) return res.status(404).json({ error: "Todo not found" });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update todo" });
+  }
+});
+
 app.patch("/api/todos/:id/status", async (req, res) => {
   try {
     const { id } = req.params;

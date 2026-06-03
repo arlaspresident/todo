@@ -94,3 +94,45 @@
 .todo-delete:hover {
   color: var(--red);
 }
+
+.todo-title-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  padding: 2px 7px;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+
+.todo-title-input:focus {
+  border-color: var(--text-3);
+}
+
+.todo-desc-input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 13px;
+  padding: 6px 8px;
+  resize: none;
+  line-height: 1.4;
+  transition: border-color 0.15s;
+}
+
+.todo-desc-input:focus {
+  border-color: var(--text-3);
+}
+
+.todo-desc-placeholder {
+  color: var(--text-3);
+  font-style: italic;
+}
+
+.todo-title:not(.todo-item--done .todo-title) {
+  cursor: text;
+}

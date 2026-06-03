@@ -1,16 +1,49 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Todo } from "../types/todo";
+import { updateTodo } from "../api/todos";
 import "./TodoItem.css";
 
 type Props = {
   todo: Todo;
   onToggle: (id: number, done: boolean) => Promise<void> | void;
   onDelete: (id: number) => Promise<void> | void;
+  onUpdate: (updated: Todo) => void;
 };
 
-export default function TodoItem({ todo, onToggle, onDelete }: Props) {
+export default function TodoItem({ todo, onToggle, onDelete, onUpdate }: Props) {
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleVal, setTitleVal] = useState(todo.title);
+  const [editingDesc, setEditingDesc] = useState(false);
+  const [descVal, setDescVal] = useState(todo.description ?? "");
   const [expanded, setExpanded] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const titleRef = useRef<HTMLInputElement>(null);
   const done = todo.status === "done";
+
+  async function saveTitle() {
+    const val = titleVal.trim();
+    if (!val || val === todo.title) { setEditingTitle(false); setTitleVal(todo.title); return; }
+    try {
+      setSaving(true);
+      const updated = await updateTodo(todo.id, { title: val });
+      onUpdate(updated);
+    } finally {
+      setSaving(false);
+      setEditingTitle(false);
+    }
+  }
+
+  async function saveDesc() {
+    if (descVal.trim() === (todo.description ?? "")) { setEditingDesc(false); return; }
+    try {
+      setSaving(true);
+      const updated = await updateTodo(todo.id, { description: descVal.trim() || "" });
+      onUpdate(updated);
+    } finally {
+      setSaving(false);
+      setEditingDesc(false);
+    }
+  }
 
   return (
     <li className={`todo-item${done ? " todo-item--done" : ""}`}>
@@ -33,18 +66,60 @@ export default function TodoItem({ todo, onToggle, onDelete }: Props) {
       </button>
 
       <div className="todo-content">
-        <span className="todo-title">{todo.title}</span>
-        {todo.description && (
+        {editingTitle ? (
+          <input
+            ref={titleRef}
+            className="todo-title-input"
+            placeholder="Task title"
+            value={titleVal}
+            onChange={(e) => setTitleVal(e.target.value)}
+            onBlur={saveTitle}
+            onKeyDown={(e) => { if (e.key === "Enter") saveTitle(); if (e.key === "Escape") { setEditingTitle(false); setTitleVal(todo.title); } }}
+            disabled={saving}
+            autoFocus
+          />
+        ) : (
+          <span
+            className="todo-title"
+            onClick={() => { if (!done) { setEditingTitle(true); } }}
+            title={done ? undefined : "Click to edit"}
+          >
+            {todo.title}
+          </span>
+        )}
+
+        {!editingTitle && (
           <button
             type="button"
             className="todo-note-toggle"
             onClick={() => setExpanded((v) => !v)}
           >
-            {expanded ? "Hide note" : "Note"}
+            {expanded ? "hide" : todo.description ? "note" : "+ note"}
           </button>
         )}
-        {todo.description && expanded && (
-          <p className="todo-description">{todo.description}</p>
+
+        {expanded && (
+          editingDesc ? (
+            <textarea
+              className="todo-desc-input"
+              placeholder="Add a note..."
+              value={descVal}
+              onChange={(e) => setDescVal(e.target.value)}
+              onBlur={saveDesc}
+              onKeyDown={(e) => { if (e.key === "Escape") { setEditingDesc(false); setDescVal(todo.description ?? ""); } }}
+              disabled={saving}
+              rows={2}
+              autoFocus
+            />
+          ) : (
+            <p
+              className="todo-description"
+              onClick={() => setEditingDesc(true)}
+              title="Click to edit note"
+            >
+              {todo.description || <span className="todo-desc-placeholder">Add a note...</span>}
+            </p>
+          )
         )}
       </div>
 

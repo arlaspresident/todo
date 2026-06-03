@@ -62,6 +62,10 @@ export default function App() {
     }
   }
 
+  function handleUpdate(updated: Todo) {
+    setTodos((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
+  }
+
   async function handleDelete(id: number) {
     try {
       setError(null);
@@ -108,6 +112,7 @@ export default function App() {
                 onAdd={handleAdd}
                 onToggle={handleToggle}
                 onDelete={handleDelete}
+                onUpdate={handleUpdate}
               />
             ))}
           </div>

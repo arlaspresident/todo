@@ -35,6 +35,17 @@ export async function createTodo(payload: CreateTodoPayload): Promise<Todo> {
   return res.json();
 }
 
+export async function updateTodo(id: number, fields: { title?: string; description?: string }): Promise<Todo> {
+  const res = await handle(
+    fetch(`${BASE}/api/todos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(fields),
+    })
+  );
+  return res.json();
+}
+
 export async function updateTodoStatus(id: number, status: TodoStatus): Promise<Todo> {
   const res = await handle(
     fetch(`${BASE}/api/todos/${id}/status`, {
