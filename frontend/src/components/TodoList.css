@@ -1,18 +1,211 @@
-.todo-list {
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 16px;
+/* ── Category colors via data-color index ─────────────────── */
+.category-section[data-color="0"] { --cat: #f59e0b; }
+.category-section[data-color="1"] { --cat: #8b5cf6; }
+.category-section[data-color="2"] { --cat: #3b82f6; }
+.category-section[data-color="3"] { --cat: #ec4899; }
+.category-section[data-color="4"] { --cat: #10b981; }
+.category-section[data-color="5"] { --cat: #f97316; }
+.category-section[data-color="6"] { --cat: #06b6d4; }
+.category-section[data-color="7"] { --cat: #a855f7; }
+.category-section[data-color="8"] { --cat: #84cc16; }
+.category-section[data-color="9"] { --cat: #6b7280; }
+
+/* ── Section container ────────────────────────────────────── */
+.category-section {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.15s;
 }
 
-.todo-list h2 {
-  margin: 0 0 12px;
-  font-size: 24px;
+.category-section:hover {
+  border-color: var(--border);
 }
 
-.todo-list ul {
+/* ── Header ───────────────────────────────────────────────── */
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  border-radius: 0;
+  transition: background 0.1s;
+}
+
+.category-header:hover {
+  background: var(--surface);
+}
+
+.category-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--cat, #6b7280);
+}
+
+.category-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.category-count {
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.category-chevron {
+  display: flex;
+  align-items: center;
+  color: var(--text-3);
+  transition: transform 0.2s;
+}
+
+.category-chevron--open {
+  transform: rotate(180deg);
+}
+
+/* ── Progress bar (native <progress>) ────────────────────── */
+.category-progress {
+  display: block;
+  width: calc(100% - 28px);
+  margin: 0 14px 10px;
+  height: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  background: var(--border-subtle);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.category-progress::-webkit-progress-bar {
+  background: var(--border-subtle);
+  border-radius: 99px;
+}
+
+.category-progress::-webkit-progress-value {
+  background: var(--cat, #6b7280);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.category-progress::-moz-progress-bar {
+  background: var(--cat, #6b7280);
+  border-radius: 99px;
+}
+
+/* ── Todo list ────────────────────────────────────────────── */
+.category-todos {
+  padding: 0 2px 4px;
+}
+
+.category-todos ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  gap: 12px;
 }
+
+/* ── Inline add row ───────────────────────────────────────── */
+.add-task-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 10px;
+}
+
+.add-task-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-3);
+}
+
+.add-task-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  padding: 2px 0;
+  caret-color: var(--text-2);
+}
+
+.add-task-input::placeholder { color: var(--text-3); }
+
+.add-task-hint {
+  font-size: 11px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.add-task-desc-toggle {
+  font-size: 11px;
+  color: var(--text-3);
+  transition: color 0.15s;
+}
+
+.add-task-desc-toggle:hover { color: var(--text-2); }
+
+.add-task-expanded {
+  padding: 0 12px 10px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-task-desc {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 13px;
+  padding: 7px 10px;
+  resize: none;
+  width: 100%;
+  transition: border-color 0.15s;
+  line-height: 1.4;
+}
+
+.add-task-desc::placeholder { color: var(--text-3); }
+.add-task-desc:focus { border-color: var(--text-3); }
+
+.add-task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.add-task-submit {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.add-task-submit:hover { background: var(--surface-2); color: var(--text); }
+.add-task-submit:disabled { opacity: 0.4; cursor: default; }
+
+.add-task-cancel {
+  color: var(--text-3);
+  font-size: 13px;
+  padding: 5px 8px;
+  transition: color 0.15s;
+}
+
+.add-task-cancel:hover { color: var(--text-2); }

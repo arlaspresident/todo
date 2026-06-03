@@ -5,10 +5,12 @@ export interface Todo {
   title: string;
   description: string | null;
   status: TodoStatus;
+  category: string;
   created_at: string;
 }
 
 export interface CreateTodoPayload {
   title: string;
   description?: string;
+  category: string;
 }

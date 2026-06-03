@@ -1,62 +1,96 @@
 .todo-item {
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 14px;
-  display: grid;
-  gap: 10px;
-}
-
-.todo-item .title {
-  font-size: 18px;
-}
-
-.todo-item .desc {
-  margin: 6px 0 0;
-  opacity: 0.9;
-}
-
-.todo-item .actions {
   display: flex;
+  align-items: flex-start;
   gap: 10px;
+  padding: 7px 10px 7px 12px;
+  border-radius: var(--radius-sm);
+  list-style: none;
+  transition: background 0.1s;
+  position: relative;
+}
+
+.todo-item:hover {
+  background: var(--surface-2);
+}
+
+.todo-item:hover .todo-delete {
+  opacity: 1;
+}
+
+.todo-checkbox {
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  padding: 0;
+  transition: transform 0.1s;
+}
+
+.todo-checkbox:hover {
+  transform: scale(1.1);
+}
+
+.todo-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
   flex-wrap: wrap;
-}
-
-.todo-item .status {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.todo-item select {
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid #333;
-  background: transparent;
-}
-
-.todo-item button {
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid #333;
-  background: transparent;
-  cursor: pointer;
-}
-
-.todo-item button:hover {
-  border-color: #555;
-}
-
-.todo-item .content {
-  display: grid;
+  align-items: baseline;
   gap: 6px;
 }
 
-.todo-item .danger {
-  border-color: #6b2b2b;
+.todo-title {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.4;
+  transition: color 0.15s;
 }
 
-.todo-item .danger:hover {
-  border-color: #a33b3b;
+.todo-item--done .todo-title {
+  color: var(--text-3);
+  text-decoration: line-through;
 }
 
+.todo-note-toggle {
+  font-size: 11px;
+  color: var(--text-3);
+  padding: 1px 6px;
+  background: var(--surface-3);
+  border-radius: 99px;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1.6;
+}
+
+.todo-note-toggle:hover {
+  color: var(--text-2);
+  background: var(--border);
+}
+
+.todo-description {
+  width: 100%;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 2px;
+  padding: 6px 8px;
+  background: var(--surface-3);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--border);
+}
+
+.todo-delete {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  color: var(--text-3);
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  margin-top: 1px;
+}
+
+.todo-delete:hover {
+  color: var(--red);
+}

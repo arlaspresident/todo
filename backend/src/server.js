@@ -11,16 +11,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//health
 app.get("/health", (req, res) => {
   res.json({ message: "Backend is running" });
 });
 
-//GET todos
 app.get("/api/todos", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, title, description, status, created_at FROM todos ORDER BY id DESC"
+      "SELECT id, title, description, status, category, created_at FROM todos ORDER BY id DESC"
     );
     res.json(result.rows);
   } catch (err) {
@@ -29,26 +27,25 @@ app.get("/api/todos", async (req, res) => {
   }
 });
 
-//POST
-
 app.post("/api/todos", async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, category } = req.body;
 
-    //validering
-    if (!title || title.trim().length < 3) {
-      return res.status(400).json({ error: "Title must be at least 3 characters" });
+    if (!title || title.trim().length < 2) {
+      return res.status(400).json({ error: "Title must be at least 2 characters" });
     }
 
-    if (description && description.length > 200) {
-      return res.status(400).json({ error: "Description must be max 200 characters" });
+    if (description && description.length > 500) {
+      return res.status(400).json({ error: "Description must be max 500 characters" });
     }
+
+    const cat = category && category.trim() ? category.trim() : "General";
 
     const result = await pool.query(
-      `INSERT INTO todos (title, description)
-       VALUES ($1, $2)
-       RETURNING id, title, description, status, created_at`,
-      [title.trim(), description || null]
+      `INSERT INTO todos (title, description, category)
+       VALUES ($1, $2, $3)
+       RETURNING id, title, description, status, category, created_at`,
+      [title.trim(), description || null, cat]
     );
 
     res.status(201).json(result.rows[0]);
@@ -58,7 +55,6 @@ app.post("/api/todos", async (req, res) => {
   }
 });
 
-//PATCH
 app.patch("/api/todos/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
@@ -70,10 +66,8 @@ app.patch("/api/todos/:id/status", async (req, res) => {
     }
 
     const result = await pool.query(
-      `UPDATE todos
-       SET status = $1
-       WHERE id = $2
-       RETURNING id, title, description, status, created_at`,
+      `UPDATE todos SET status = $1 WHERE id = $2
+       RETURNING id, title, description, status, category, created_at`,
       [status, id]
     );
 
@@ -88,7 +82,6 @@ app.patch("/api/todos/:id/status", async (req, res) => {
   }
 });
 
-//DELETE
 app.delete("/api/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -109,10 +102,8 @@ app.delete("/api/todos/:id", async (req, res) => {
   }
 });
 
-
 const PORT = process.env.PORT || 5000;
 
-// starta server efter db init
 (async () => {
   try {
     await initDb();

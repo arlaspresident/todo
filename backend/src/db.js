@@ -2,10 +2,7 @@ const { Pool } = require("pg");
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl:
-    process.env.DB_SSL === "true"
-      ? { rejectUnauthorized: false }
-      : false,
+  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
 });
 
 async function initDb() {
@@ -13,10 +10,17 @@ async function initDb() {
     CREATE TABLE IF NOT EXISTS todos (
       id SERIAL PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
-      description VARCHAR(200),
+      description VARCHAR(500),
       status VARCHAR(20) NOT NULL DEFAULT 'not_started',
+      category VARCHAR(100) NOT NULL DEFAULT 'General',
       created_at TIMESTAMP DEFAULT NOW()
     );
+  `);
+  await pool.query(`
+    ALTER TABLE todos ADD COLUMN IF NOT EXISTS category VARCHAR(100) NOT NULL DEFAULT 'General';
+  `);
+  await pool.query(`
+    ALTER TABLE todos ALTER COLUMN description TYPE VARCHAR(500);
   `);
 }
 
