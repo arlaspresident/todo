@@ -22,10 +22,35 @@
   color: var(--text);
 }
 
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .app-stats {
   font-size: 13px;
   color: var(--text-3);
   font-weight: 500;
+}
+
+.notes-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 11px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.notes-toggle-btn:hover {
+  background: var(--surface-3);
+  color: var(--text);
 }
 
 .app-progress-bar {

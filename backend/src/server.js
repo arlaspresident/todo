@@ -128,11 +128,10 @@ app.delete("/api/todos/:id", async (req, res) => {
   }
 });
 
-app.get("/api/todos/:id/notes", async (req, res) => {
+app.get("/api/notes", async (_req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, todo_id, author_emoji, content, created_at FROM notes WHERE todo_id = $1 ORDER BY created_at ASC",
-      [req.params.id]
+      "SELECT id, author_emoji, content, created_at FROM global_notes ORDER BY created_at ASC"
     );
     res.json(result.rows);
   } catch (err) {
@@ -141,14 +140,14 @@ app.get("/api/todos/:id/notes", async (req, res) => {
   }
 });
 
-app.post("/api/todos/:id/notes", async (req, res) => {
+app.post("/api/notes", async (req, res) => {
   try {
     const { author_emoji, content } = req.body;
     if (!content || !content.trim()) return res.status(400).json({ error: "Content required" });
     if (!author_emoji) return res.status(400).json({ error: "Author required" });
     const result = await pool.query(
-      "INSERT INTO notes (todo_id, author_emoji, content) VALUES ($1, $2, $3) RETURNING id, todo_id, author_emoji, content, created_at",
-      [req.params.id, author_emoji, content.trim()]
+      "INSERT INTO global_notes (author_emoji, content) VALUES ($1, $2) RETURNING id, author_emoji, content, created_at",
+      [author_emoji, content.trim()]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

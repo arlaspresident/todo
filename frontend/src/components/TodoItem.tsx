@@ -8,10 +8,9 @@ type Props = {
   onToggle: (id: number, done: boolean) => Promise<void> | void;
   onDelete: (id: number) => Promise<void> | void;
   onUpdate: (updated: Todo) => void;
-  onOpenNotes: (todo: Todo) => void;
 };
 
-export default function TodoItem({ todo, onToggle, onDelete, onUpdate, onOpenNotes }: Props) {
+export default function TodoItem({ todo, onToggle, onDelete, onUpdate }: Props) {
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleVal, setTitleVal] = useState(todo.title);
   const [editingDesc, setEditingDesc] = useState(false);
@@ -82,7 +81,7 @@ export default function TodoItem({ todo, onToggle, onDelete, onUpdate, onOpenNot
         ) : (
           <span
             className="todo-title"
-            onClick={() => { if (!done) { setEditingTitle(true); } }}
+            onClick={() => { if (!done) setEditingTitle(true); }}
             title={done ? undefined : "Click to edit"}
           >
             {todo.title}
@@ -123,17 +122,6 @@ export default function TodoItem({ todo, onToggle, onDelete, onUpdate, onOpenNot
           )
         )}
       </div>
-
-      <button
-        type="button"
-        className="todo-notes-btn"
-        onClick={() => onOpenNotes(todo)}
-        aria-label="Open notes"
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M2 2h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 2V3a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
-        </svg>
-      </button>
 
       <button
         type="button"

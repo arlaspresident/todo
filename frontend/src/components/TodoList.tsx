@@ -11,10 +11,9 @@ type Props = {
   onToggle: (id: number, done: boolean) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
   onUpdate: (updated: Todo) => void;
-  onOpenNotes: (todo: Todo) => void;
 };
 
-export default function CategorySection({ category, colorIndex, todos, onAdd, onToggle, onDelete, onUpdate, onOpenNotes }: Props) {
+export default function CategorySection({ category, colorIndex, todos, onAdd, onToggle, onDelete, onUpdate }: Props) {
   const [open, setOpen] = useState(true);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -66,7 +65,7 @@ export default function CategorySection({ category, colorIndex, todos, onAdd, on
           <div className="category-todos">
             <ul>
               {todos.map((t) => (
-                <TodoItem key={t.id} todo={t} onToggle={onToggle} onDelete={onDelete} onUpdate={onUpdate} onOpenNotes={onOpenNotes} />
+                <TodoItem key={t.id} todo={t} onToggle={onToggle} onDelete={onDelete} onUpdate={onUpdate} />
               ))}
             </ul>
           </div>

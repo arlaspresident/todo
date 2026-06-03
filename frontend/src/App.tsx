@@ -21,7 +21,7 @@ export default function App() {
   const [extraCategories, setExtraCategories] = useState<string[]>([]);
   const [addingCategory, setAddingCategory] = useState(false);
   const [newCatName, setNewCatName] = useState("");
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [notesOpen, setNotesOpen] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -66,7 +66,6 @@ export default function App() {
 
   function handleUpdate(updated: Todo) {
     setTodos((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
-    if (selectedTodo?.id === updated.id) setSelectedTodo(updated);
   }
 
   async function handleDelete(id: number) {
@@ -74,7 +73,6 @@ export default function App() {
       setError(null);
       await deleteTodo(id);
       setTodos((prev) => prev.filter((t) => t.id !== id));
-      if (selectedTodo?.id === id) setSelectedTodo(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to delete task");
     }
@@ -97,7 +95,19 @@ export default function App() {
         <header className="app-header">
           <div className="app-header-top">
             <h1 className="app-title">Reputio MVP</h1>
-            <span className="app-stats">{totalDone}/{totalAll} done</span>
+            <div className="app-header-actions">
+              <span className="app-stats">{totalDone}/{totalAll} done</span>
+              <button
+                type="button"
+                className="notes-toggle-btn"
+                onClick={() => setNotesOpen(true)}
+              >
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                  <path d="M2 2h11a1 1 0 011 1v7a1 1 0 01-1 1H6l-4 3V3a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+                </svg>
+                Notes
+              </button>
+            </div>
           </div>
           <progress className="app-progress-bar" value={totalDone} max={totalAll || 1} />
         </header>
@@ -118,7 +128,6 @@ export default function App() {
                   onToggle={handleToggle}
                   onDelete={handleDelete}
                   onUpdate={handleUpdate}
-                  onOpenNotes={setSelectedTodo}
                 />
               ))}
             </div>
@@ -153,7 +162,7 @@ export default function App() {
         )}
       </div>
 
-      <NotesPanel todo={selectedTodo} onClose={() => setSelectedTodo(null)} />
+      <NotesPanel open={notesOpen} onClose={() => setNotesOpen(false)} />
     </>
   );
 }

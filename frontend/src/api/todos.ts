@@ -57,14 +57,14 @@ export async function updateTodoStatus(id: number, status: TodoStatus): Promise<
   return res.json();
 }
 
-export async function fetchNotes(todoId: number): Promise<Note[]> {
-  const res = await handle(fetch(`${BASE}/api/todos/${todoId}/notes`));
+export async function fetchNotes(): Promise<Note[]> {
+  const res = await handle(fetch(`${BASE}/api/notes`));
   return res.json();
 }
 
-export async function addNote(todoId: number, author_emoji: string, content: string): Promise<Note> {
+export async function addNote(author_emoji: string, content: string): Promise<Note> {
   const res = await handle(
-    fetch(`${BASE}/api/todos/${todoId}/notes`, {
+    fetch(`${BASE}/api/notes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ author_emoji, content }),
